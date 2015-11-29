@@ -17,13 +17,14 @@ import com.jfixby.cmns.api.net.http.HttpCallExecutor;
 import com.jfixby.cmns.api.path.ChildrenList;
 import com.jfixby.cmns.api.sys.Sys;
 import com.jfixby.cmns.api.util.JUtils;
+import com.jfixby.cmns.desktop.DesktopAssembler;
 
 public class S002_GenerateSearchString {
 	static String template = "https://www.google.com/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=";
 
 	public static void main(String[] args) throws IOException,
 			URISyntaxException {
-		Setup.setup();
+		DesktopAssembler.setup();
 		File words_folder = LocalFileSystem.ApplicationHome().child("words");
 		ChildrenList words_files = words_folder.listChildren();
 		WordsSorter sorter = new WordsSorter(false);

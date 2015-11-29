@@ -14,11 +14,12 @@ import com.jfixby.cmns.api.net.http.HttpCallSpecs;
 import com.jfixby.cmns.api.net.http.HttpURL;
 import com.jfixby.cmns.api.net.http.METHOD;
 import com.jfixby.cmns.api.util.JUtils;
+import com.jfixby.cmns.desktop.DesktopAssembler;
 
 public class S000_DownloadFiles {
 
 	public static void main(String[] args) throws IOException {
-		Setup.setup();
+		DesktopAssembler.setup();
 
 		File chars_file = LocalFileSystem.ApplicationHome().child(
 				"exclude-chars.txt");
