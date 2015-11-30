@@ -114,7 +114,7 @@ public class S002_GenerateSearchString {
 		Set<String> stack = JUtils.newSet();
 		for (; stack.size() < n;) {
 			double d1 = random.nextDouble();
-			d1 = FloatMath.pow(d1, 1.0);
+			d1 = FloatMath.power(d1, 1.0);
 			int index = (int) (terms_list.size() * d1);
 			index = (int) IntegerMath.limit(0, index, terms_list.size());
 			String term = terms_list.getElementAt(index).getWord();
