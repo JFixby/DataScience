@@ -2,9 +2,13 @@ package com.jfixby.gsem.run;
 
 import java.io.IOException;
 
+import com.jfixby.cmns.adopted.gdx.json.GdxJson;
+import com.jfixby.cmns.api.collections.Collections;
 import com.jfixby.cmns.api.collections.List;
-import com.jfixby.cmns.api.filesystem.File;
-import com.jfixby.cmns.api.filesystem.LocalFileSystem;
+import com.jfixby.cmns.api.file.ChildrenList;
+import com.jfixby.cmns.api.file.File;
+import com.jfixby.cmns.api.file.LocalFileSystem;
+import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
 import com.jfixby.cmns.api.math.IntegerMath;
 import com.jfixby.cmns.api.net.http.Http;
@@ -14,17 +18,15 @@ import com.jfixby.cmns.api.net.http.HttpCallProgress;
 import com.jfixby.cmns.api.net.http.HttpCallSpecs;
 import com.jfixby.cmns.api.net.http.HttpURL;
 import com.jfixby.cmns.api.net.http.METHOD;
-import com.jfixby.cmns.api.path.ChildrenList;
-import com.jfixby.cmns.api.util.JUtils;
 import com.jfixby.cmns.desktop.DesktopAssembler;
 
 public class S001_CollectWorlds {
 
 	public static void main(String[] args) throws IOException {
 		DesktopAssembler.setup();
+		Json.installComponent(new GdxJson());
 
-		File chars_file = LocalFileSystem.ApplicationHome().child(
-				"exclude-chars.txt");
+		File chars_file = LocalFileSystem.ApplicationHome().child("exclude-chars.txt");
 		String chars = chars_file.readToString();
 		int K = 0;
 		WordsSorter sorter = new WordsSorter();
@@ -62,16 +64,16 @@ public class S001_CollectWorlds {
 			data = exclude_chars(data, chars);
 			data = data.replaceAll("  ", " ");
 
-			List<String> split = JUtils.newList(data.split(" "));
+			List<String> split = Collections.newList(data.split(" "));
 			// split.print(url_string);
-//			split.print("words++");
+			// split.print("words++");
 			sorter.addAll(split);
 
 		}
 
-		 K = (K / 8);
+		K = (K / 8);
 		// L.d("cutting", K)
-//		K = 2;
+		// K = 2;
 		sorter.filter(K);
 		sorter.sort();
 		sorter.print();

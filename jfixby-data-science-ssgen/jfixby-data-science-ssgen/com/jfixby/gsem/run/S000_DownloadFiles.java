@@ -3,8 +3,8 @@ package com.jfixby.gsem.run;
 import java.io.IOException;
 
 import com.jfixby.cmns.api.collections.List;
-import com.jfixby.cmns.api.filesystem.File;
-import com.jfixby.cmns.api.filesystem.LocalFileSystem;
+import com.jfixby.cmns.api.file.File;
+import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.log.L;
 import com.jfixby.cmns.api.net.http.Http;
 import com.jfixby.cmns.api.net.http.HttpCall;
@@ -15,33 +15,29 @@ import com.jfixby.cmns.api.net.http.HttpURL;
 import com.jfixby.cmns.api.net.http.METHOD;
 import com.jfixby.cmns.api.util.JUtils;
 import com.jfixby.cmns.desktop.DesktopAssembler;
+import com.jfixby.red.desktop.net.HttpDesktopComponent;
 
 public class S000_DownloadFiles {
 
 	public static void main(String[] args) throws IOException {
 		DesktopAssembler.setup();
+		Http.installComponent(new HttpDesktopComponent());
 
-		File chars_file = LocalFileSystem.ApplicationHome().child(
-				"exclude-chars.txt");
+		File chars_file = LocalFileSystem.ApplicationHome().child("exclude-chars.txt");
 
-		File sources = LocalFileSystem.ApplicationHome().child(
-				"word-sources.txt");
+		File sources = LocalFileSystem.ApplicationHome().child("word-sources.txt");
 		File raw_folder = LocalFileSystem.ApplicationHome().child("raw");
 		raw_folder.makeFolder();
 		String list = sources.readToString();
 		List<String> list_of_sources = JUtils.split(list, "\n");
 
 		for (int i = 0; i < list_of_sources.size(); i++) {
-			String url = list_of_sources.getElementAt(i).replaceAll("\r", "")
-					.replaceAll("\n", "");
+			String url = list_of_sources.getElementAt(i).replaceAll("\r", "").replaceAll("\n", "");
 
 			String data = null;
 			L.d("downloading", url);
 			data = readURL(url);
-			String child_name = url.replaceAll("https", "")
-					.replaceAll("http", "").replaceAll("://", "")
-					.replaceAll("/", "_")
-					+ ".html";
+			String child_name = url.replaceAll("https", "").replaceAll("http", "").replaceAll("://", "").replaceAll("/", "_") + ".html";
 			L.d("          ", child_name);
 			File file = raw_folder.child(child_name);
 			file.writeString(data);

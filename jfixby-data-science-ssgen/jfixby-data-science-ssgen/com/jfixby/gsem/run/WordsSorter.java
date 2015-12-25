@@ -5,14 +5,14 @@ import java.util.Comparator;
 import java.util.Vector;
 
 import com.jfixby.cmns.api.collections.Collection;
+import com.jfixby.cmns.api.collections.Collections;
 import com.jfixby.cmns.api.collections.List;
 import com.jfixby.cmns.api.collections.Map;
 import com.jfixby.cmns.api.collections.Set;
-import com.jfixby.cmns.api.filesystem.File;
-import com.jfixby.cmns.api.filesystem.LocalFileSystem;
+import com.jfixby.cmns.api.file.File;
+import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
-import com.jfixby.cmns.api.util.JUtils;
 
 public class WordsSorter {
 
@@ -21,24 +21,23 @@ public class WordsSorter {
 	private static final boolean COLLECT_TRIPLETS = false;
 	private static final boolean COLLECT_4 = !false;
 	private Set<String> exclude;
+	List<String> history = Collections.newList();
+	final Map<String, WordCollector> collectors = Collections.newMap();
 
 	public WordsSorter() throws IOException {
 		super();
 
-		File word_sources = LocalFileSystem.ApplicationHome().child(
-				"exclude-words.txt");
-		exclude = JUtils.newSet(word_sources.readToString().split("\r\n"));
+		File word_sources = LocalFileSystem.ApplicationHome().child("exclude-words.txt");
+		exclude = Collections.newSet(word_sources.readToString().split("\r\n"));
 		exclude.print("exclude");
 	}
 
 	public WordsSorter(boolean b) throws IOException {
-		File word_sources = LocalFileSystem.ApplicationHome().child(
-				"exclude-phrases.txt");
-		exclude = JUtils.newSet(word_sources.readToString().split("\r\n"));
+		File word_sources = LocalFileSystem.ApplicationHome().child("exclude-phrases.txt");
+		exclude = Collections.newSet(word_sources.readToString().split("\r\n"));
 		exclude.print("exclude");
 	}
 
-	final Map<String, WordCollector> collectors = JUtils.newMap();
 	private Comparator<WordCollector> comparator = new Comparator<WordCollector>() {
 
 		@Override
@@ -72,8 +71,6 @@ public class WordsSorter {
 		total = total + elementAt.n;
 	}
 
-	List<String> history = JUtils.newList();
-
 	public void add(String word) {
 		if (word.length() == 0) {
 			return;
@@ -96,23 +93,15 @@ public class WordsSorter {
 		if (history.size() > 2 && COLLECT_TRIPLETS) {
 			String previous_word = this.history.getElementAt(1);
 			String previous_previous_word = this.history.getElementAt(2);
-			WordCollector collector = getCollector(previous_previous_word + " "
-					+ previous_word + " " + word);
+			WordCollector collector = getCollector(previous_previous_word + " " + previous_word + " " + word);
 			collector.add();
 			total++;
 		}
 		if (history.size() > 3 && COLLECT_4) {
 			String previous_word = this.history.getElementAt(1);
 			String previous_previous_word = this.history.getElementAt(2);
-			String previous_previous_previous_word = this.history
-					.getElementAt(3);
-			WordCollector collector = getCollector(previous_previous_previous_word
-					+ " "
-					+ previous_previous_word
-					+ " "
-					+ previous_word
-					+ " "
-					+ word);
+			String previous_previous_previous_word = this.history.getElementAt(3);
+			WordCollector collector = getCollector(previous_previous_previous_word + " " + previous_previous_word + " " + previous_word + " " + word);
 			collector.add();
 			total++;
 		}
@@ -150,9 +139,9 @@ public class WordsSorter {
 
 	public void saveTo(String file_name) throws IOException {
 
-		File word_sources = LocalFileSystem.ApplicationHome().child("words")
-				.child(file_name);
+		File word_sources = LocalFileSystem.ApplicationHome().child("words");
 		word_sources.makeFolder();
+		word_sources = word_sources.child(file_name);
 		WordCollectorFile file = new WordCollectorFile();
 		Vector<WordCollector> vals = new Vector<WordCollector>();
 		vals.addAll(this.collectors.values().toJavaList());
@@ -164,7 +153,7 @@ public class WordsSorter {
 
 	public void filter(int S) {
 		Collection<WordCollector> vals = collectors.values();
-		List<String> bad = JUtils.newList();
+		List<String> bad = Collections.newList();
 		for (long i = 0; i < vals.size(); i++) {
 			WordCollector element = vals.getElementAt(i);
 			if (element.n <= S) {
@@ -176,7 +165,7 @@ public class WordsSorter {
 	}
 
 	public Collection<WordCollector> list() {
-		List<WordCollector> results = JUtils.newList();
+		List<WordCollector> results = Collections.newList();
 		for (int i = 0; i < this.collectors.size(); i++) {
 			WordCollector val = this.collectors.getValueAt(i);
 			results.add(val);
@@ -187,12 +176,16 @@ public class WordsSorter {
 
 	public void sort() {
 		Collection<WordCollector> list = this.list();
-		List<WordCollector> vals = JUtils.newList(list);
+		List<WordCollector> vals = Collections.newList(list);
 		vals.sort(comparator);
 		vals.reverse();
 		this.collectors.clear();
 		for (WordCollector c : vals) {
 			this.collectors.put(c.getWord(), c);
 		}
+	}
+
+	public void clear() {
+		collectors.clear();
 	}
 }
