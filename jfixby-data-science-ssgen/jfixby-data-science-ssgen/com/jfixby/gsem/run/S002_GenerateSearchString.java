@@ -4,17 +4,19 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Random;
 
+import com.jfixby.cmns.adopted.gdx.json.GdxJson;
 import com.jfixby.cmns.api.collections.Collection;
+import com.jfixby.cmns.api.collections.Collections;
 import com.jfixby.cmns.api.collections.List;
 import com.jfixby.cmns.api.collections.Set;
-import com.jfixby.cmns.api.filesystem.File;
-import com.jfixby.cmns.api.filesystem.LocalFileSystem;
+import com.jfixby.cmns.api.file.ChildrenList;
+import com.jfixby.cmns.api.file.File;
+import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
 import com.jfixby.cmns.api.math.FloatMath;
 import com.jfixby.cmns.api.math.IntegerMath;
 import com.jfixby.cmns.api.net.http.HttpCallExecutor;
-import com.jfixby.cmns.api.path.ChildrenList;
 import com.jfixby.cmns.api.sys.Sys;
 import com.jfixby.cmns.api.util.JUtils;
 import com.jfixby.cmns.desktop.DesktopAssembler;
@@ -22,9 +24,10 @@ import com.jfixby.cmns.desktop.DesktopAssembler;
 public class S002_GenerateSearchString {
 	static String template = "https://www.google.com/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=";
 
-	public static void main(String[] args) throws IOException,
-			URISyntaxException {
+	public static void main(String[] args) throws IOException, URISyntaxException {
 		DesktopAssembler.setup();
+		Json.installComponent(new GdxJson());
+		
 		File words_folder = LocalFileSystem.ApplicationHome().child("words");
 		ChildrenList words_files = words_folder.listChildren();
 		WordsSorter sorter = new WordsSorter(false);
@@ -37,10 +40,9 @@ public class S002_GenerateSearchString {
 			L.d("reading", file_name);
 			String data = file.readToString();
 			L.d("parsing", file_name);
-			WordCollectorFile content = Json.deserializeFromString(
-					WordCollectorFile.class, data);
+			WordCollectorFile content = Json.deserializeFromString(WordCollectorFile.class, data);
 
-			List<WordCollector> split = JUtils.newList(content.values);
+			List<WordCollector> split = Collections.newList(content.values);
 			L.d("   adding", split.size());
 			sorter.addOthers(split);
 		}
@@ -57,10 +59,9 @@ public class S002_GenerateSearchString {
 		int NUMBER_OF_TERMS = 8;
 
 		for (int i = 0;; i++) {
-			List<String> batch = JUtils.newList();
+			List<String> batch = Collections.newList();
 			for (int k = 0; k < EXTRACTIONS; k++) {
-				String request = generateRequest(NUMBER_OF_TERMS, terms_list,
-						random);
+				String request = generateRequest(NUMBER_OF_TERMS, terms_list, random);
 				batch.add(request);
 
 			}
@@ -76,8 +77,7 @@ public class S002_GenerateSearchString {
 
 	}
 
-	private static void call(HttpCallExecutor exec, String request_url,
-			String request) throws IOException, URISyntaxException {
+	private static void call(HttpCallExecutor exec, String request_url, String request) throws IOException, URISyntaxException {
 		// HttpURL url = Http.newURL(request_url);
 		// HttpCallSpecs specs = Http.newCallSpecs();
 		// specs.setURL(url);
@@ -95,8 +95,7 @@ public class S002_GenerateSearchString {
 		// L.d("       ", data_string);
 	}
 
-	public static void openUrl(String url) throws IOException,
-			URISyntaxException {
+	public static void openUrl(String url) throws IOException, URISyntaxException {
 		if (java.awt.Desktop.isDesktopSupported()) {
 			java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
 
@@ -107,11 +106,10 @@ public class S002_GenerateSearchString {
 		}
 	}
 
-	private static String generateRequest(int n,
-			Collection<WordCollector> terms_list, Random random) {
+	private static String generateRequest(int n, Collection<WordCollector> terms_list, Random random) {
 		String result = "";
 
-		Set<String> stack = JUtils.newSet();
+		Set<String> stack = Collections.newSet();
 		for (; stack.size() < n;) {
 			double d1 = random.nextDouble();
 			d1 = FloatMath.power(d1, 1.0);
