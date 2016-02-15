@@ -18,7 +18,7 @@ import com.jfixby.cmns.api.net.http.HttpCallProgress;
 import com.jfixby.cmns.api.net.http.HttpCallSpecs;
 import com.jfixby.cmns.api.net.http.HttpURL;
 import com.jfixby.cmns.api.net.http.METHOD;
-import com.jfixby.cmns.desktop.DesktopAssembler;
+import com.jfixby.red.desktop.DesktopAssembler;
 
 public class S001_CollectWorlds {
 
