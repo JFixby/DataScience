@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Random;
 
-import com.jfixby.cmns.adopted.gdx.json.GdxJson;
+import com.jfixby.cmns.adopted.gdx.json.RedJson;
 import com.jfixby.cmns.api.collections.Collection;
 import com.jfixby.cmns.api.collections.Collections;
 import com.jfixby.cmns.api.collections.List;
@@ -26,7 +26,7 @@ public class S002_GenerateSearchString {
 
 	public static void main(String[] args) throws IOException, URISyntaxException {
 		DesktopAssembler.setup();
-		Json.installComponent(new GdxJson());
+		Json.installComponent(new RedJson());
 		
 		File words_folder = LocalFileSystem.ApplicationHome().child("words");
 		ChildrenList words_files = words_folder.listChildren();

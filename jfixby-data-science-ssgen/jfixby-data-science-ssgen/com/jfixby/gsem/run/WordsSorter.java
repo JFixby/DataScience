@@ -146,7 +146,7 @@ public class WordsSorter {
 		Vector<WordCollector> vals = new Vector<WordCollector>();
 		vals.addAll(this.collectors.values().toJavaList());
 		file.values = vals;
-		String data = Json.serializeToString(file);
+		String data = Json.serializeToString(file).toString();
 		word_sources.writeString(data);
 
 	}

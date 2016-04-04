@@ -2,7 +2,7 @@ package com.jfixby.gsem.run;
 
 import java.io.IOException;
 
-import com.jfixby.cmns.adopted.gdx.json.GdxJson;
+import com.jfixby.cmns.adopted.gdx.json.RedJson;
 import com.jfixby.cmns.api.collections.Collections;
 import com.jfixby.cmns.api.collections.List;
 import com.jfixby.cmns.api.file.ChildrenList;
@@ -24,7 +24,7 @@ public class S001_CollectWorlds {
 
 	public static void main(String[] args) throws IOException {
 		DesktopAssembler.setup();
-		Json.installComponent(new GdxJson());
+		Json.installComponent(new RedJson());
 
 		File chars_file = LocalFileSystem.ApplicationHome().child("exclude-chars.txt");
 		String chars = chars_file.readToString();
