@@ -15,7 +15,7 @@ import com.jfixby.cmns.api.net.http.Http;
 import com.jfixby.cmns.api.net.http.HttpCall;
 import com.jfixby.cmns.api.net.http.HttpCallExecutor;
 import com.jfixby.cmns.api.net.http.HttpCallProgress;
-import com.jfixby.cmns.api.net.http.HttpCallSpecs;
+import com.jfixby.cmns.api.net.http.HttpCallParams;
 import com.jfixby.cmns.api.net.http.HttpURL;
 import com.jfixby.cmns.api.net.http.METHOD;
 import com.jfixby.red.desktop.DesktopAssembler;
@@ -85,7 +85,7 @@ public class S001_CollectWorlds {
 		HttpURL url = Http.newURL(url_string);
 		L.d("calling", url);
 
-		HttpCallSpecs call_scecs = Http.newCallSpecs();
+		HttpCallParams call_scecs = Http.newCallParams();
 		call_scecs.setURL(url);
 		call_scecs.setMethod(METHOD.GET);
 		call_scecs.setUseAgent(true);

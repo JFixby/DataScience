@@ -10,7 +10,7 @@ import com.jfixby.cmns.api.net.http.Http;
 import com.jfixby.cmns.api.net.http.HttpCall;
 import com.jfixby.cmns.api.net.http.HttpCallExecutor;
 import com.jfixby.cmns.api.net.http.HttpCallProgress;
-import com.jfixby.cmns.api.net.http.HttpCallSpecs;
+import com.jfixby.cmns.api.net.http.HttpCallParams;
 import com.jfixby.cmns.api.net.http.HttpURL;
 import com.jfixby.cmns.api.net.http.METHOD;
 import com.jfixby.cmns.api.util.JUtils;
@@ -21,7 +21,7 @@ public class S000_DownloadFiles {
 
 	public static void main(String[] args) throws IOException {
 		DesktopAssembler.setup();
-		Http.installComponent(new HttpDesktopComponent());
+		
 
 		File chars_file = LocalFileSystem.ApplicationHome().child("exclude-chars.txt");
 
@@ -49,7 +49,7 @@ public class S000_DownloadFiles {
 	private static String readURL(String url_string) throws IOException {
 		HttpURL url = Http.newURL(url_string);
 
-		HttpCallSpecs call_scecs = Http.newCallSpecs();
+		HttpCallParams call_scecs = Http.newCallParams();
 		call_scecs.setURL(url);
 		call_scecs.setMethod(METHOD.GET);
 		call_scecs.setUseAgent(true);
