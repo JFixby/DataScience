@@ -14,13 +14,13 @@ import com.jfixby.cmns.api.net.http.HttpCallParams;
 import com.jfixby.cmns.api.net.http.HttpURL;
 import com.jfixby.cmns.api.net.http.METHOD;
 import com.jfixby.cmns.api.util.JUtils;
-import com.jfixby.red.desktop.DesktopAssembler;
+import com.jfixby.red.desktop.DesktopSetup;
 import com.jfixby.red.desktop.net.HttpDesktopComponent;
 
 public class S000_DownloadFiles {
 
 	public static void main(String[] args) throws IOException {
-		DesktopAssembler.setup();
+		DesktopSetup.deploy();
 		
 
 		File chars_file = LocalFileSystem.ApplicationHome().child("exclude-chars.txt");
