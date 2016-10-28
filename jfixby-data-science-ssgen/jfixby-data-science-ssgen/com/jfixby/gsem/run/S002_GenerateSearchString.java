@@ -29,7 +29,7 @@ public class S002_GenerateSearchString {
 		Json.installComponent(new RedJson());
 		
 		File words_folder = LocalFileSystem.ApplicationHome().child("words");
-		ChildrenList words_files = words_folder.listChildren();
+		ChildrenList words_files = words_folder.listDirectChildren();
 		WordsSorter sorter = new WordsSorter(false);
 		for (int i = 0; i < words_files.size(); i++) {
 			File file = words_files.getElementAt(i);

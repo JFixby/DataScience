@@ -32,7 +32,7 @@ public class S001_CollectWorlds {
 		WordsSorter sorter = new WordsSorter();
 
 		File raw_folder = LocalFileSystem.ApplicationHome().child("raw");
-		ChildrenList list = raw_folder.listChildren();
+		ChildrenList list = raw_folder.listDirectChildren();
 
 		for (int i = 0; i < list.size(); i++) {
 			File file = list.getElementAt(i);
