@@ -15,7 +15,7 @@ import com.jfixby.cmns.api.net.http.HttpURL;
 import com.jfixby.cmns.api.net.http.METHOD;
 import com.jfixby.cmns.api.util.JUtils;
 import com.jfixby.red.desktop.DesktopSetup;
-import com.jfixby.red.desktop.net.HttpDesktopComponent;
+import com.jfixby.red.net.http.RedDesktopComponent;
 
 public class S000_DownloadFiles {
 
