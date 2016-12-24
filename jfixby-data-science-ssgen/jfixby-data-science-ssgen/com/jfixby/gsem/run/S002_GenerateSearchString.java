@@ -5,21 +5,21 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Random;
 
-import com.jfixby.cmns.api.collections.Collection;
-import com.jfixby.cmns.api.collections.Collections;
-import com.jfixby.cmns.api.collections.List;
-import com.jfixby.cmns.api.collections.Set;
-import com.jfixby.cmns.api.desktop.DesktopSetup;
-import com.jfixby.cmns.api.file.ChildrenList;
-import com.jfixby.cmns.api.file.File;
-import com.jfixby.cmns.api.file.LocalFileSystem;
-import com.jfixby.cmns.api.json.Json;
-import com.jfixby.cmns.api.log.L;
-import com.jfixby.cmns.api.math.FloatMath;
-import com.jfixby.cmns.api.math.IntegerMath;
-import com.jfixby.cmns.api.net.http.HttpCallExecutor;
-import com.jfixby.cmns.api.sys.Sys;
-import com.jfixby.cmns.api.util.JUtils;
+import com.jfixby.scarabei.api.collections.Collection;
+import com.jfixby.scarabei.api.collections.Collections;
+import com.jfixby.scarabei.api.collections.List;
+import com.jfixby.scarabei.api.collections.Set;
+import com.jfixby.scarabei.api.desktop.DesktopSetup;
+import com.jfixby.scarabei.api.file.ChildrenList;
+import com.jfixby.scarabei.api.file.File;
+import com.jfixby.scarabei.api.file.LocalFileSystem;
+import com.jfixby.scarabei.api.json.Json;
+import com.jfixby.scarabei.api.log.L;
+import com.jfixby.scarabei.api.math.FloatMath;
+import com.jfixby.scarabei.api.math.IntegerMath;
+import com.jfixby.scarabei.api.net.http.HttpCallExecutor;
+import com.jfixby.scarabei.api.sys.Sys;
+import com.jfixby.scarabei.api.util.JUtils;
 
 public class S002_GenerateSearchString {
 	static String template = "https://www.google.com/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=";
