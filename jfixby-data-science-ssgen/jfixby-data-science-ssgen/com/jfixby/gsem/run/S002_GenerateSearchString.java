@@ -10,7 +10,7 @@ import com.jfixby.scarabei.api.collections.Collections;
 import com.jfixby.scarabei.api.collections.List;
 import com.jfixby.scarabei.api.collections.Set;
 import com.jfixby.scarabei.api.desktop.DesktopSetup;
-import com.jfixby.scarabei.api.file.ChildrenList;
+import com.jfixby.scarabei.api.file.FilesList;
 import com.jfixby.scarabei.api.file.File;
 import com.jfixby.scarabei.api.file.LocalFileSystem;
 import com.jfixby.scarabei.api.json.Json;
@@ -29,7 +29,7 @@ public class S002_GenerateSearchString {
 		Json.installComponent("com.jfixby.cmns.adopted.gdx.json.RedJson");
 
 		final File words_folder = LocalFileSystem.ApplicationHome().child("words");
-		final ChildrenList words_files = words_folder.listDirectChildren();
+		final FilesList words_files = words_folder.listDirectChildren();
 		final WordsSorter sorter = new WordsSorter(false);
 		for (int i = 0; i < words_files.size(); i++) {
 			final File file = words_files.getElementAt(i);

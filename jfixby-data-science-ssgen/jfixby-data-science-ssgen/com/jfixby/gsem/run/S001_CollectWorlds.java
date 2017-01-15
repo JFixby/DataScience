@@ -6,7 +6,7 @@ import java.io.IOException;
 import com.jfixby.scarabei.api.collections.Collections;
 import com.jfixby.scarabei.api.collections.List;
 import com.jfixby.scarabei.api.desktop.DesktopSetup;
-import com.jfixby.scarabei.api.file.ChildrenList;
+import com.jfixby.scarabei.api.file.FilesList;
 import com.jfixby.scarabei.api.file.File;
 import com.jfixby.scarabei.api.file.LocalFileSystem;
 import com.jfixby.scarabei.api.json.Json;
@@ -31,7 +31,7 @@ public class S001_CollectWorlds {
 		final WordsSorter sorter = new WordsSorter();
 
 		final File raw_folder = LocalFileSystem.ApplicationHome().child("raw");
-		final ChildrenList list = raw_folder.listDirectChildren();
+		final FilesList list = raw_folder.listDirectChildren();
 
 		for (int i = 0; i < list.size(); i++) {
 			final File file = list.getElementAt(i);
