@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Random;
 
+import com.jfixby.scarabei.adopted.gdx.json.GdxJson;
 import com.jfixby.scarabei.api.collections.Collection;
 import com.jfixby.scarabei.api.collections.Collections;
 import com.jfixby.scarabei.api.collections.List;
 import com.jfixby.scarabei.api.collections.Set;
-import com.jfixby.scarabei.api.desktop.DesktopSetup;
-import com.jfixby.scarabei.api.file.FilesList;
+import com.jfixby.scarabei.api.desktop.ScarabeiDesktop;
 import com.jfixby.scarabei.api.file.File;
+import com.jfixby.scarabei.api.file.FilesList;
 import com.jfixby.scarabei.api.file.LocalFileSystem;
 import com.jfixby.scarabei.api.json.Json;
 import com.jfixby.scarabei.api.log.L;
@@ -25,8 +26,8 @@ public class S002_GenerateSearchString {
 	static String template = "https://www.google.com/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=";
 
 	public static void main (final String[] args) throws IOException, URISyntaxException {
-		DesktopSetup.deploy();
-		Json.installComponent("com.jfixby.cmns.adopted.gdx.json.RedJson");
+		ScarabeiDesktop.deploy();
+		Json.installComponent(new GdxJson());
 
 		final File words_folder = LocalFileSystem.ApplicationHome().child("words");
 		final FilesList words_files = words_folder.listDirectChildren();
