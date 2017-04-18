@@ -1,8 +1,9 @@
+
 package com.jfixby.gsem.run;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Vector;
 
 import com.jfixby.scarabei.api.collections.Collection;
 import com.jfixby.scarabei.api.collections.Collections;
@@ -20,172 +21,173 @@ public class WordsSorter {
 	private static final boolean COLLECT_PAIRS = false;
 	private static final boolean COLLECT_TRIPLETS = false;
 	private static final boolean COLLECT_4 = !false;
-	private Set<String> exclude;
+	private final Set<String> exclude;
 	List<String> history = Collections.newList();
 	final Map<String, WordCollector> collectors = Collections.newMap();
 
-	public WordsSorter() throws IOException {
+	public WordsSorter () throws IOException {
 		super();
 
-		File word_sources = LocalFileSystem.ApplicationHome().child("exclude-words.txt");
-		exclude = Collections.newSet(word_sources.readToString().split("\r\n"));
-		exclude.print("exclude");
+		final File word_sources = LocalFileSystem.ApplicationHome().child("exclude-words.txt");
+		this.exclude = Collections.newSet(word_sources.readToString().split("\r\n"));
+		this.exclude.print("exclude");
 	}
 
-	public WordsSorter(boolean b) throws IOException {
-		File word_sources = LocalFileSystem.ApplicationHome().child("exclude-phrases.txt");
-		exclude = Collections.newSet(word_sources.readToString().split("\r\n"));
-		exclude.print("exclude");
+	public WordsSorter (final boolean b) throws IOException {
+		final File word_sources = LocalFileSystem.ApplicationHome().child("exclude-phrases.txt");
+		this.exclude = Collections.newSet(word_sources.readToString().split("\r\n"));
+		this.exclude.print("exclude");
 	}
 
-	private Comparator<WordCollector> comparator = new Comparator<WordCollector>() {
+	private final Comparator<WordCollector> comparator = new Comparator<WordCollector>() {
 
 		@Override
-		public int compare(WordCollector o1, WordCollector o2) {
+		public int compare (final WordCollector o1, final WordCollector o2) {
 			return Integer.compare(o1.n, o2.n);
 		}
 	};
 	private long total;
 
-	public void addAll(Collection<String> split) {
+	public void addAll (final Collection<String> split) {
 		for (int i = 0; i < split.size(); i++) {
 			this.add(split.getElementAt(i));
 		}
 	}
 
-	public void addOthers(Collection<WordCollector> split) {
-		for (WordCollector c : split) {
+	public void addOthers (final Collection<WordCollector> split) {
+		for (final WordCollector c : split) {
 			this.addOther(c);
 		}
 	}
 
-	private void addOther(WordCollector elementAt) {
-		String word = elementAt.getWord();
-		if (exclude.contains(word)) {
+	private void addOther (final WordCollector elementAt) {
+		final String word = elementAt.getWord();
+		if (this.exclude.contains(word)) {
 			L.d("skip", word);
 			return;
 		}
 
-		WordCollector collector = getCollector(word);
+		final WordCollector collector = this.getCollector(word);
 		collector.add(elementAt.n);
-		total = total + elementAt.n;
+		this.total = this.total + elementAt.n;
 	}
 
-	public void add(String word) {
+	public void add (String word) {
 		if (word.length() == 0) {
 			return;
 		}
 		word = word.toLowerCase();
-		if (exclude.contains(word)) {
+		if (this.exclude.contains(word)) {
 			return;
 		}
 
-		history.insertElementAt(word, 0);
-		if (history.size() > 10) {
-			history.removeLast();
+		this.history.insertElementAt(word, 0);
+		if (this.history.size() > 10) {
+			this.history.removeLast();
 		}
-		if (history.size() > 1 && COLLECT_PAIRS) {
-			String previous_word = this.history.getElementAt(1);
-			WordCollector collector = getCollector(previous_word + " " + word);
+		if (this.history.size() > 1 && COLLECT_PAIRS) {
+			final String previous_word = this.history.getElementAt(1);
+			final WordCollector collector = this.getCollector(previous_word + " " + word);
 			collector.add();
-			total++;
+			this.total++;
 		}
-		if (history.size() > 2 && COLLECT_TRIPLETS) {
-			String previous_word = this.history.getElementAt(1);
-			String previous_previous_word = this.history.getElementAt(2);
-			WordCollector collector = getCollector(previous_previous_word + " " + previous_word + " " + word);
+		if (this.history.size() > 2 && COLLECT_TRIPLETS) {
+			final String previous_word = this.history.getElementAt(1);
+			final String previous_previous_word = this.history.getElementAt(2);
+			final WordCollector collector = this.getCollector(previous_previous_word + " " + previous_word + " " + word);
 			collector.add();
-			total++;
+			this.total++;
 		}
-		if (history.size() > 3 && COLLECT_4) {
-			String previous_word = this.history.getElementAt(1);
-			String previous_previous_word = this.history.getElementAt(2);
-			String previous_previous_previous_word = this.history.getElementAt(3);
-			WordCollector collector = getCollector(previous_previous_previous_word + " " + previous_previous_word + " " + previous_word + " " + word);
+		if (this.history.size() > 3 && COLLECT_4) {
+			final String previous_word = this.history.getElementAt(1);
+			final String previous_previous_word = this.history.getElementAt(2);
+			final String previous_previous_previous_word = this.history.getElementAt(3);
+			final WordCollector collector = this
+				.getCollector(previous_previous_previous_word + " " + previous_previous_word + " " + previous_word + " " + word);
 			collector.add();
-			total++;
+			this.total++;
 		}
 
 		if (COLLECT_SINGLES) {
-			WordCollector collector = getCollector(word);
+			final WordCollector collector = this.getCollector(word);
 			collector.add();
-			total++;
+			this.total++;
 		}
 
 	}
 
-	private WordCollector getCollector(String word) {
-		WordCollector c = collectors.get(word);
+	private WordCollector getCollector (final String word) {
+		WordCollector c = this.collectors.get(word);
 		if (c == null) {
 			// L.d("new collector", word);
 			c = new WordCollector(word, this);
-			collectors.put(word, c);
+			this.collectors.put(word, c);
 		} else {
-			// L.d("        found", word);
+			// L.d(" found", word);
 		}
 
 		return c;
 	}
 
-	public void print() {
+	public void print () {
 		// List<WordCollector> vals = JUtils.newList(collectors.values());
 		// vals.sort(comparator);
-		collectors.print("");
+		this.collectors.print("");
 	}
 
-	public String quantileOf(int n) {
-		return ((int) (n * 100d / total)) + "%";
+	public String quantileOf (final int n) {
+		return ((int)(n * 100d / this.total)) + "%";
 	}
 
-	public void saveTo(String file_name) throws IOException {
+	public void saveTo (final String file_name) throws IOException {
 
 		File word_sources = LocalFileSystem.ApplicationHome().child("words");
 		word_sources.makeFolder();
 		word_sources = word_sources.child(file_name);
-		WordCollectorFile file = new WordCollectorFile();
-		Vector<WordCollector> vals = new Vector<WordCollector>();
+		final WordCollectorFile file = new WordCollectorFile();
+		final ArrayList<WordCollector> vals = new ArrayList<WordCollector>();
 		vals.addAll(this.collectors.values().toJavaList());
 		file.values = vals;
-		String data = Json.serializeToString(file).toString();
+		final String data = Json.serializeToString(file).toString();
 		word_sources.writeString(data);
 
 	}
 
-	public void filter(int S) {
-		Collection<WordCollector> vals = collectors.values();
-		List<String> bad = Collections.newList();
+	public void filter (final int S) {
+		final Collection<WordCollector> vals = this.collectors.values();
+		final List<String> bad = Collections.newList();
 		for (long i = 0; i < vals.size(); i++) {
-			WordCollector element = vals.getElementAt(i);
+			final WordCollector element = vals.getElementAt(i);
 			if (element.n <= S) {
 				bad.add(element.getWord());
 				L.d("removing", element);
 			}
 		}
-		collectors.removeAll(bad);
+		this.collectors.removeAll(bad);
 	}
 
-	public Collection<WordCollector> list() {
-		List<WordCollector> results = Collections.newList();
+	public Collection<WordCollector> list () {
+		final List<WordCollector> results = Collections.newList();
 		for (int i = 0; i < this.collectors.size(); i++) {
-			WordCollector val = this.collectors.getValueAt(i);
+			final WordCollector val = this.collectors.getValueAt(i);
 			results.add(val);
 		}
 		return results;
 
 	}
 
-	public void sort() {
-		Collection<WordCollector> list = this.list();
-		List<WordCollector> vals = Collections.newList(list);
-		vals.sort(comparator);
+	public void sort () {
+		final Collection<WordCollector> list = this.list();
+		final List<WordCollector> vals = Collections.newList(list);
+		vals.sort(this.comparator);
 		vals.reverse();
 		this.collectors.clear();
-		for (WordCollector c : vals) {
+		for (final WordCollector c : vals) {
 			this.collectors.put(c.getWord(), c);
 		}
 	}
 
-	public void clear() {
-		collectors.clear();
+	public void clear () {
+		this.collectors.clear();
 	}
 }

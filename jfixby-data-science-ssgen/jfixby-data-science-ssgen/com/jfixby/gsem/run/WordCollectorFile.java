@@ -1,9 +1,10 @@
+
 package com.jfixby.gsem.run;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class WordCollectorFile {
 
-	public Vector<WordCollector> values;
+	public ArrayList<WordCollector> values;
 
 }
